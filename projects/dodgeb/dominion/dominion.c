@@ -710,7 +710,7 @@ drawCard(currentPlayer, state);
 
 }
 
-void Council_Room(struct gameState *state, int handPos){ // Council rooms is implimeted correctly
+void Council_Room(struct gameState *state, int handPos){ // Council room is implemented correctly
   int i;
   int currentPlayer = whoseTurn(state);
 //+4 Buys
