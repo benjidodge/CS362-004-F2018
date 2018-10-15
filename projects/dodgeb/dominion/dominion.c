@@ -643,7 +643,13 @@ int getCost(int cardNumber)
   return -1;
 }
 
-void Adveturer(){
+void Adventurer(struct gameState *state){
+  int currentPlayer = whoseTurn(state);
+
+  int temphand[MAX_HAND];// moved above the if statement
+  int drawntreasure=0;
+  int cardDrawn;
+  int z = 0;// this is the counter for the temp hand
  while(drawntreasure<2){
         if (state->deckCount[currentPlayer] <1){//if the deck is empty we need to shuffle discard and add to deck
           shuffle(currentPlayer, state);
@@ -664,7 +670,9 @@ void Adveturer(){
       }
 }
 
-void Smithy(){
+void Smithy(struct gameState *state, int handPos){
+  int i;
+  int currentPlayer = whoseTurn(state);
       //+3 Cards
       for (i = 0; i < 2; i++){  //should be i<3
           drawCard(currentPlayer, state);
@@ -674,7 +682,8 @@ void Smithy(){
       discardCard(handPos, currentPlayer, state, 0);
 }
 
-void Salvager(){
+void Salvager(struct gameState *state, int handPos, int choice1){
+  int currentPlayer = whoseTurn(state);
       // removed the icrementation of num buys
       if (choice1)
         {
@@ -688,7 +697,8 @@ void Salvager(){
         discardCard(handPos, currentPlayer, state, 0);
 }
 
-void Village(){
+void Village(struct gameState *state, int handPos){
+  int currentPlayer = whoseTurn(state);
 drawCard(currentPlayer, state);
       //+1 card
       drawCard(currentPlayer, state);
@@ -700,7 +710,9 @@ drawCard(currentPlayer, state);
 
 }
 
-void Coucil_Rooms(){ // Council rooms is implimeted correctly
+void Council_Room(struct gameState *state, int handPos){ // Council rooms is implimeted correctly
+  int i;
+  int currentPlayer = whoseTurn(state);
 //+4 Buys
 for (i = 0; i < 4; i++)
         {
@@ -765,7 +777,7 @@ int cardEffect(int card, int choice1, int choice2, int choice3, struct gameState
 	state->discard[currentPlayer][state->discardCount[currentPlayer]++]=temphand[z-1]; // discard all cards in play that have been drawn
 	z=z-1;
       }*/
-      Adventurer();
+      Adventurer(state);
       return 0;
 			
     case council_room:
@@ -789,7 +801,7 @@ int cardEffect(int card, int choice1, int choice2, int choice3, struct gameState
 			
       //put played card in played card pile
       discardCard(handPos, currentPlayer, state, 0);*/
-      Council_Rooms();		
+      Council_Room(state, handPos);		
       return 0;
 			
     case feast:
@@ -918,7 +930,7 @@ int cardEffect(int card, int choice1, int choice2, int choice3, struct gameState
 			
       //discard card from hand
       discardCard(handPos, currentPlayer, state, 0);*/
-      Smithy();
+      Smithy(state, handPos);
       return 0;
 		
     case village:
@@ -930,7 +942,7 @@ int cardEffect(int card, int choice1, int choice2, int choice3, struct gameState
 			
       //discard played card from hand
       discardCard(handPos, currentPlayer, state, 0);*/
-      Village();
+      Village(state, handPos);
       return 0;
 		
     case baron:
@@ -1260,7 +1272,7 @@ int cardEffect(int card, int choice1, int choice2, int choice3, struct gameState
 			
       //discard card
       discardCard(handPos, currentPlayer, state, 0);*/
-      Salvager();
+      Salvager(state, handPos, choice1);
       return 0;
 		
     case sea_hag:
